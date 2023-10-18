@@ -9,7 +9,6 @@
 #include "../Event/TestIO.h"
 #include "version_mega.h"
 
-
 enum
 {
     TI_DOCUMENT_READY
@@ -17,16 +16,11 @@ enum
 
 namespace sinTestServer
 {
-
-
     class Service:
         public UnknownBase,
-        public ListenerBuffered1Thread,
+        public ListenerBuffered1Thread, /// single threaded handler
         public Broadcaster
     {
-        bool on_startService(const systemEvent::startService*);
-        bool handleEvent(const REF_getter<Event::Base>& e);
-
     public:
         Service(const SERVICE_id&, const std::string&  nm, IInstance *ins);
         ~Service();
@@ -43,15 +37,14 @@ namespace sinTestServer
         }
 
     private:
+        bool handleEvent(const REF_getter<Event::Base>& e);
         bool on_AddTaskREQ(const sinTestEvent::AddTaskREQ* e);
         bool on_GetResultREQ(const sinTestEvent::GetResultREQ* e);
         bool on_TickAlarm(const timerEvent::TickAlarm* e);
 
         std::map<std::string, REF_getter<sinTestEvent::AddTaskREQ> > task_in_process_;
         std::map<std::string, std::string > ready_tasks_;
-
     };
-
 }
 #endif
 

@@ -12,7 +12,8 @@
 enum TIMERS
 {
     TI_START,
-    TI_RESEND_REQUEST
+    TI_RESEND_ADDTASK_REQ,
+    TI_GETRESULT_EXPIRED
 };
 
 namespace sinTestClient
