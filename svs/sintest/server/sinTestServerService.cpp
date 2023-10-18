@@ -77,7 +77,7 @@ bool sinTestServer::Service::on_AddTaskREQ(const sinTestEvent::AddTaskREQ* e)
     task_in_process_.insert({e->taskId,e});
 
     /// we'll receive ready signal from timer when document will be ready
-    sendEvent(ServiceEnum::Timer,new timerEvent::SetAlarm(TI_DOCUMENT_READY,toRef(e->taskId),NULL,rand()%100,ListenerBase::serviceId));
+    sendEvent(ServiceEnum::Timer,new timerEvent::SetAlarm(TI_DOCUMENT_READY,toRef(e->taskId),NULL,rand()%20,ListenerBase::serviceId));
 
     passEvent(new sinTestEvent::AddTaskRSP(e->taskId,"in_process",poppedFrontRoute(e->route)));
 
@@ -97,6 +97,10 @@ bool sinTestServer::Service::handleEvent(const REF_getter<Event::Base>& e)
     try {
         auto& ID=e->id;
 
+        if(systemEventEnum::startService==ID)
+        {
+            return true;
+        }
         if(timerEventEnum::TickAlarm==ID)
             return on_TickAlarm((const timerEvent::TickAlarm*)e.operator->());
 

@@ -28,7 +28,7 @@ std::string sinTestClient::Service::genId()
 
 bool sinTestClient::Service::on_startService(const systemEvent::startService*)
 {
-    sendEvent(ServiceEnum::Timer,new timerEvent::SetAlarm(TI_START,NULL,NULL,3,ListenerBase::serviceId));
+    sendEvent(ServiceEnum::Timer,new timerEvent::SetAlarm(TI_START,NULL,NULL,10,ListenerBase::serviceId));
     return true;
 }
 bool sinTestClient::Service::on_TickAlarm(const timerEvent::TickAlarm* e)
@@ -122,7 +122,6 @@ bool sinTestClient::Service::handleEvent(const REF_getter<Event::Base>& e)
     XTRY;
     try {
         auto& ID=e->id;
-
         if(timerEventEnum::TickAlarm==ID)
             return on_TickAlarm((const timerEvent::TickAlarm*)e.operator->());
         if(systemEventEnum::startService==ID)
